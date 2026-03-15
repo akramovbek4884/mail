@@ -1,5 +1,5 @@
 {
-  "name": "outlook-pwa",
+  "name": "xmail-pwa",
   "private": true,
   "scripts": {
     "icons": "node make-icons.js"

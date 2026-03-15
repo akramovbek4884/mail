@@ -1,4 +1,4 @@
-const CACHE = 'outlook-pwa-v2';
+const CACHE = 'xmail-pwa-v1';
 const ASSETS = ['index.html', 'manifest.json', 'icon.svg', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', function (e) {

@@ -1,7 +1,7 @@
 {
-  "name": "Outlook — Kirish",
-  "short_name": "Outlook",
-  "description": "Outlook elektron pochta kirish",
+  "name": "xmail — Kirish",
+  "short_name": "xmail",
+  "description": "xmail elektron pochta kirish",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
