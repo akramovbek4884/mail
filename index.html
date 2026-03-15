@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#0078d4">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Outlook">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="manifest" href="manifest.json">
+  <title>Outlook — Kirish</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f3f3f3;
+      color: #333;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 320px;
+      text-align: center;
+    }
+    .logo {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 1rem;
+      display: block;
+      border-radius: 16px;
+    }
+    h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+    p {
+      font-size: 0.875rem;
+      color: #666;
+      margin-bottom: 1.25rem;
+      line-height: 1.4;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #fff;
+      background: #0078d4;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:active { opacity: 0.9; }
+    .btn-install {
+      margin-top: 0.75rem;
+      background: transparent;
+      color: #0078d4;
+      border: 1px solid #0078d4;
+    }
+    .btn-install.hidden { display: none; }
+    .contact-block { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e0e0e0; }
+    .contact-block.hidden { display: none; }
+    .contact-block h2 { font-size: 0.9375rem; font-weight: 600; color: #333; margin-bottom: 0.5rem; }
+    .contact-link { display: block; font-size: 0.875rem; color: #0078d4; text-decoration: none; padding: 0.35rem 0; }
+    .contact-link:active { opacity: 0.9; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img class="logo" src="icon.svg" alt="Outlook" width="72" height="72">
+    <h1>Outlook</h1>
+    <p>Elektron pochtangizga kirish uchun quyidagi tugmani bosing.</p>
+    <a class="btn" href="https://outlook.live.com/" rel="noopener">Outlook ga kirish</a>
+    <button type="button" class="btn btn-install" id="installBtn">Ilova sifatida o'rnating</button>
+    <div class="contact-block" id="contactBlock">
+      <h2>Men bilan bog'laning</h2>
+      <a class="contact-link" href="tel:+998779744445">+998 77 974 44 45</a>
+      <a class="contact-link" href="https://t.me/mirzaevweb" target="_blank" rel="noopener">Telegram: @mirzaevweb</a>
+    </div>
+  </div>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    }
+    (function () {
+      var installBtn = document.getElementById('installBtn');
+      var contactBlock = document.getElementById('contactBlock');
+      var deferredPrompt;
+
+      function showContactHideInstall() {
+        installBtn.classList.add('hidden');
+      }
+
+      if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+        showContactHideInstall();
+      }
+
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        deferredPrompt = e;
+      });
+      installBtn.addEventListener('click', function () {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then(function (r) {
+            if (r.outcome === 'accepted') showContactHideInstall();
+            deferredPrompt = null;
+          });
+          return;
+        }
+        var msg = 'Brauzer o\'rnatish oynasini ko\'rsatmasa:\n\n';
+        msg += '• Chrome (kompyuter): manzil satridagi ⊕ ikonka yoki ⋮ menyu → "Outlook ilovasini o\'rnatish"\n\n';
+        msg += '• Chrome (telefon): ⋮ menyu → "Uy ekraniga qo\'shish" yoki "Ilovani o\'rnatish"\n\n';
+        msg += '• iPhone: Share (↗) → "Uy ekraniga qo\'shish"';
+        alert(msg);
+      });
+      window.addEventListener('appinstalled', function () {
+        showContactHideInstall();
+      });
+    })();
+  </script>
+</body>
+</html>
